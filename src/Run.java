@@ -8,21 +8,13 @@ public class Run {
 
 	public static void main(String[] args) {
 		
-		//Random rand = new Random();
-		
 		ArrayList<Car> carList = new ArrayList<Car>();
 		
 		for(int i =0; i < totalCar_Count; i++){
 			carList.add(randomGenerator());
 		}
-		
-		
-		/*
-		carList.add(new Car(5, "jeep"));
-		carList.add(new Car(3, "bmw"));
-		carList.add(new Car(8, "audi"));
-		
-		*/
+
+		sortByTrustValue(carList);
 		System.out.println(carList);
 
 	}
@@ -33,11 +25,24 @@ public class Run {
 		int trustScore = rand.nextInt(10); //Trust scores from 0-10 . Can be changed if anything
 		int carVal = rand.nextInt(4); //5 car types, 0-4 indexes
 		String carType = carTypes[carVal];
-		
-		
+			
 		return new Car(trustScore, carType);
-		
-		
 	}
-
+	
+	//descending order. Greatest -> Least (1st element in list has greatest trust val)
+	public static void sortByTrustValue(ArrayList<Car> carList) {
+		Collections.sort(carList, new Comparator<Car>() {
+			@Override
+			public int compare(Car car1, Car car2) {
+				// Sort in descending order of trustValue
+				if (car1.getTrustValue() < car2.getTrustValue()) 
+					return 1;
+				  else if (car1.getTrustValue() > car2.getTrustValue()) 
+					return -1;
+				  else 
+					return 0;
+			}
+		});
+	}
+	
 }
