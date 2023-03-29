@@ -13,12 +13,58 @@ public class Run {
 		for(int i =0; i < totalCar_Count; i++){
 			carList.add(randomGenerator());
 		}
+		
+		sortByTrustValue(carList);
+		System.out.println(carList);
+		
+		//Random car interactions that adjust their trust values
+		for(int i=0; i< totalCar_Count; i++) {
+			Car carA = carList.get(carPicker());
+			Car carB = carList.get(carPicker());
+			
+			while(carA == carB) {
+				carB = carList.get(carPicker());
+			}
+			
+			if(carA.getTrustValue() < 4) {
+				System.out.println("Suspicious Trust Value Found in " + carA);
+				carA.adjustTrust(lowTrustPicker());
+			}
+			else {
+				carA.adjustTrust(highTrustPicker());
+			}
+			
+			if(carB.getTrustValue() < 4) {
+				System.out.println("Suspicious Trust Value Found in " + carB);
+				carB.adjustTrust(lowTrustPicker());
+			} else {
+				carB.adjustTrust(highTrustPicker());
+			}
+			
+		}
 
 		sortByTrustValue(carList);
 		System.out.println(carList);
 
 	}
 	
+	public static double highTrustPicker() {
+		Random randVal = new Random();
+		Double randomValue = randVal.nextInt(6) + 5.0;
+		return randomValue;
+	}
+	
+	public static double lowTrustPicker() {
+		Random randVal = new Random();
+		Double randomValue = randVal.nextInt(5) + 1.0;
+		return randomValue;
+	}
+	
+	public static int carPicker() {
+		Random randCar = new Random();
+		int randomCar = randCar.nextInt(totalCar_Count);
+		return randomCar;
+	}
 	
 	public static Car randomGenerator() {
 		Random rand = new Random();

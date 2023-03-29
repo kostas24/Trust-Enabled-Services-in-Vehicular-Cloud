@@ -24,6 +24,10 @@ public class Car {
 	public void setCarName(String carName) {
 		this.carName = carName;
 	}
+	
+	public void adjustTrust(Double newTrust) {
+		this.trustValue = (this.trustValue + newTrust) / 2;
+	}
 
 	@Override
 	public String toString() {
