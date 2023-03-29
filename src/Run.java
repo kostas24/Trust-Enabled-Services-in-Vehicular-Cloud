@@ -26,8 +26,21 @@ public class Run {
 				carB = carList.get(carPicker());
 			}
 			
-			carA.adjustTrust(trustValuePicker());
-			carB.adjustTrust(trustValuePicker());
+			if(carA.getTrustValue() < 4) {
+				System.out.println("Suspicious Trust Value Found in " + carA);
+				carA.adjustTrust(lowTrustPicker());
+			}
+			else {
+				carA.adjustTrust(highTrustPicker());
+			}
+			
+			if(carB.getTrustValue() < 4) {
+				System.out.println("Suspicious Trust Value Found in " + carB);
+				carB.adjustTrust(lowTrustPicker());
+			} else {
+				carB.adjustTrust(highTrustPicker());
+			}
+			
 		}
 
 		sortByTrustValue(carList);
@@ -35,9 +48,15 @@ public class Run {
 
 	}
 	
-	public static double trustValuePicker() {
+	public static double highTrustPicker() {
 		Random randVal = new Random();
-		Double randomValue = randVal.nextInt(10) + 1.0;
+		Double randomValue = randVal.nextInt(6) + 5.0;
+		return randomValue;
+	}
+	
+	public static double lowTrustPicker() {
+		Random randVal = new Random();
+		Double randomValue = randVal.nextInt(5) + 1.0;
 		return randomValue;
 	}
 	
