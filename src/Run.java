@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Run {
 
-	private final static int totalCar_Count = 5;
+	private final static int totalCar_Count = 10;
 	
 	final static String[] carTypes = {"Jeep", "Bmw", "Lexus", "Honda", "Toyota"}; //just for show purposes, can add more if needed
 
@@ -15,7 +15,8 @@ public class Run {
 		}
 		
 		sortByTrustValue(carList);
-		System.out.println(carList);
+		System.out.println("List of cars in the vehicular network...");
+		System.out.println(carList + "\n");
 		
 		//Random car interactions that adjust their trust values
 		for(int i=0; i< totalCar_Count; i++) {
@@ -43,6 +44,7 @@ public class Run {
 			
 		}
 
+		System.out.println("\nList of cars in the vehicular network after simulations...");
 		sortByTrustValue(carList);
 		System.out.println(carList);
 
@@ -69,10 +71,11 @@ public class Run {
 	public static Car randomGenerator() {
 		Random rand = new Random();
 		int trustScore = rand.nextInt(10); //Trust scores from 0-10 . Can be changed if anything
-		int carVal = rand.nextInt(4); //5 car types, 0-4 indexes
+		int carVal = rand.nextInt(4); //5 car types, 0-4 indexes. ****Must change if more carTypes are added!
+		int lPlate = rand.nextInt(10000); //create random license Plate #
 		String carType = carTypes[carVal];
 			
-		return new Car(trustScore, carType);
+		return new Car(trustScore, carType, lPlate);
 	}
 	
 	//descending order. Greatest -> Least (1st element in list has greatest trust val)

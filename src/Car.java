@@ -1,12 +1,14 @@
 
 public class Car {
 	private double trustValue;
-	private String carName;
+	private String carType;
+	private int lPlate;
 
-	public Car(double trustValue, String carName) {
+	public Car(double trustValue, String carType, int lPlate) {
 		super();
 		this.trustValue = trustValue;
-		this.carName = carName;
+		this.carType = carType;
+		this.lPlate = lPlate;
 	}
 
 	public double getTrustValue() {
@@ -17,21 +19,25 @@ public class Car {
 		this.trustValue = trustValue;
 	}
 
-	public String getCarName() {
-		return carName;
+	public String getcarType() {
+		return carType;
 	}
 
-	public void setCarName(String carName) {
-		this.carName = carName;
+	public void setcarType(String carType) {
+		this.carType = carType;
 	}
-	
+
+	public int getLPlate(){
+		return lPlate;
+	}
+
 	public void adjustTrust(Double newTrust) {
 		this.trustValue = (this.trustValue + newTrust) / 2;
 	}
 
 	@Override
 	public String toString() {
-		return "Car: " + carName + " trustValue= " + trustValue;
+		return "LPlate: " +lPlate+ " Car: " + carType + " trustValue = " + trustValue;
 	}
 
 }
