@@ -3,6 +3,7 @@ import java.util.*;
 public class Run {
 
 	private final static int totalCar_Count = 10;
+	public static int currentCarCount = 10;
 	
 	final static String[] carTypes = {"Jeep", "Bmw", "Lexus", "Honda", "Toyota"}; //just for show purposes, can add more if needed
 
@@ -18,8 +19,18 @@ public class Run {
 		System.out.println("List of cars in the vehicular network...");
 		System.out.println(carList + "\n");
 		
+		ArrayList<Integer> overseers = overseePicker(2);
+		for(int overseer: overseers) {
+			carList.get(overseer).setTrustValue(10);
+			carList.get(overseer).setOverseer();
+			System.out.println(carList.get(overseer).toString() + " is overseer"+ "\n");
+		}
+		
 		//Random car interactions that adjust their trust values
-		for(int i=0; i< totalCar_Count; i++) {
+		for(int i=0; i < 25; i++) {
+			if(carList.size() < 1 ) {
+				break;
+			}
 			Car carA = carList.get(carPicker());
 			Car carB = carList.get(carPicker());
 			
@@ -27,17 +38,29 @@ public class Run {
 				carB = carList.get(carPicker());
 			}
 			
-			if(carA.getTrustValue() < 4) {
+			if(carA.getTrustValue() <= 4) {
 				System.out.println("Suspicious Trust Value Found in " + carA);
 				carA.adjustTrust(lowTrustPicker());
+				carA.increaseSus();
+				if(carB.getOverseer() == true && carA.getSusCounter() > 1) {
+					carList.remove(carA);
+					currentCarCount--;
+					System.out.println(carA.toString() + "has been isolated");
+				}
 			}
 			else {
 				carA.adjustTrust(highTrustPicker());
 			}
 			
-			if(carB.getTrustValue() < 4) {
+			if(carB.getTrustValue() <= 4) {
 				System.out.println("Suspicious Trust Value Found in " + carB);
 				carB.adjustTrust(lowTrustPicker());
+				carB.increaseSus();
+				if(carA.getOverseer() == true && carB.getSusCounter() > 1) {
+					carList.remove(carB);
+					currentCarCount--;
+					System.out.println(carB.toString() + "has been isolated");
+				}
 			} else {
 				carB.adjustTrust(highTrustPicker());
 			}
@@ -47,7 +70,24 @@ public class Run {
 		System.out.println("\nList of cars in the vehicular network after simulations...");
 		sortByTrustValue(carList);
 		System.out.println(carList);
-
+	}
+	
+	public static ArrayList overseePicker(int overseerCount) {
+		ArrayList<Integer> overseers = new ArrayList<Integer>();
+		HashSet<Integer> overseersSet = new HashSet<>();
+		Random randVal = new Random();
+		
+		for (int i=0; i<overseerCount; i++) {
+			while (overseersSet.size() < overseerCount) {
+				int randomValue = randVal.nextInt(totalCar_Count);
+				if(!overseersSet.contains(randomValue)) {
+					overseersSet.add(randomValue);
+					overseers.add(randomValue);
+				}
+			}
+		}
+		
+		return overseers;
 	}
 	
 	public static double highTrustPicker() {
@@ -62,9 +102,15 @@ public class Run {
 		return randomValue;
 	}
 	
+	public static double randomTrustPicker() {
+		Random randVal = new Random();
+		Double randomValue = randVal.nextInt(10) + 1.0;
+		return randomValue;
+	}
+	
 	public static int carPicker() {
 		Random randCar = new Random();
-		int randomCar = randCar.nextInt(totalCar_Count);
+		int randomCar = randCar.nextInt(currentCarCount);
 		return randomCar;
 	}
 	
@@ -75,7 +121,7 @@ public class Run {
 		int lPlate = rand.nextInt(10000); //create random license Plate #
 		String carType = carTypes[carVal];
 			
-		return new Car(trustScore, carType, lPlate);
+		return new Car(trustScore, carType, lPlate, 0);
 	}
 	
 	//descending order. Greatest -> Least (1st element in list has greatest trust val)
