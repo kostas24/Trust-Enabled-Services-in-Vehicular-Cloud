@@ -11,9 +11,23 @@ public class Run {
 		
 		ArrayList<Car> carList = new ArrayList<Car>();
 		
+		//Generates initial list of cars, two of which will have low trust scores while the rest have high
+		
 		for(int i =0; i < totalCar_Count; i++){
-			carList.add(randomGenerator());
+			if(i<totalCar_Count-2) {
+				Car car = randomGenerator();
+				System.out.println(car);
+				carList.add(car);
+			}
+			else {
+				Car car =  maliceGenerator();
+				System.out.println(car);
+				carList.add(car);
+			}
+			
 		}
+		
+		
 		
 		sortByTrustValue(carList);
 		System.out.println("List of cars in the vehicular network...");
@@ -38,7 +52,7 @@ public class Run {
 				carB = carList.get(carPicker());
 			}
 			
-			if(carA.getTrustValue() <= 4) {
+			if(carA.getTrustValue() <= 5) {
 				System.out.println("Suspicious Trust Value Found in " + carA);
 				carA.adjustTrust(lowTrustPicker());
 				carA.increaseSus();
@@ -52,7 +66,7 @@ public class Run {
 				carA.adjustTrust(highTrustPicker());
 			}
 			
-			if(carB.getTrustValue() <= 4) {
+			if(carB.getTrustValue() <= 5) {
 				System.out.println("Suspicious Trust Value Found in " + carB);
 				carB.adjustTrust(lowTrustPicker());
 				carB.increaseSus();
@@ -116,11 +130,21 @@ public class Run {
 	
 	public static Car randomGenerator() {
 		Random rand = new Random();
-		int trustScore = rand.nextInt(10); //Trust scores from 0-10 . Can be changed if anything
+		int trustScore = rand.nextInt(5) + 6; //Trust scores from 0-10 . Can be changed if anything
 		int carVal = rand.nextInt(4); //5 car types, 0-4 indexes. ****Must change if more carTypes are added!
 		int lPlate = rand.nextInt(10000); //create random license Plate #
 		String carType = carTypes[carVal];
 			
+		return new Car(trustScore, carType, lPlate, 0);
+	}
+	
+	public static Car maliceGenerator() {
+		Random rand = new Random();
+		int trustScore = rand.nextInt(5) + 1;
+		int carVal = rand.nextInt(4);
+		int lPlate = rand.nextInt(10000);
+		String carType = carTypes[carVal];
+		
 		return new Car(trustScore, carType, lPlate, 0);
 	}
 	
